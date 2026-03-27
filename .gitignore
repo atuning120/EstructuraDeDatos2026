@@ -1,1 +1,12 @@
-.exe
+# C++ compiled artifacts
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.dylib
+*.lib
+
+# Executables
+*.exe
+e
