@@ -90,6 +90,56 @@ Nodo* dropElemento(Nodo *head, int n){
     return head;
 }
 
+
+Nodo* invertirLista(Nodo* head){
+    Nodo *anterior = nullptr;
+    Nodo *actual = head;
+
+    while (actual != nullptr){
+        Nodo *siguiente = actual->getNext();
+        actual->setNext(anterior);
+        anterior = actual;
+        actual = siguiente;
+    }
+
+    return anterior;
+}
+
+bool isPrimo(int n){
+    if (n <= 1) return false;
+    for (int i = 2; i <= n / 2; i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+
+
+Nodo* eliminarPrimos(Nodo* head) {
+    // Eliminar nodos primos al inicio de la lista
+    while (head != nullptr && isPrimo(head->getDato())) {
+        Nodo* temp = head;
+        head = head->getNext();
+        temp->setNext(nullptr);
+        delete temp;
+    }
+
+    // Eliminar nodos primos en el resto de la lista
+    Nodo* current = head;
+    while (current != nullptr && current->getNext() != nullptr) {
+        if (isPrimo(current->getNext()->getDato())) {
+            Nodo* temp = current->getNext();
+            current->setNext(current->getNext()->getNext());
+            temp->setNext(nullptr);
+            delete temp;
+        } else {
+            current = current->getNext();
+        }
+    }
+
+    return head;
+}
+
+
 int main() {
     Nodo *head=new Nodo(0);
     Nodo *nodo1= new Nodo(1);
@@ -117,4 +167,11 @@ int main() {
 
     head=dropElemento(head, 2);
     imprimirLista(head);
+
+    head=invertirLista(head);
+    imprimirLista(head);
+
+    head=eliminarPrimos(head);
+    imprimirLista(head);
+    
 }   
