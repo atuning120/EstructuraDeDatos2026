@@ -1,6 +1,5 @@
 #include <iostream>
 #include "lista.h"
-#include <string>
 
 using namespace std;
 
@@ -44,7 +43,7 @@ Nodo* addInicio(Nodo *head, Nodo *nuevo){
 Nodo* addFin(Nodo *head, Nodo *nuevo){
      //Si la lista viene vacia
     if(head == nullptr){
-        return nullptr;
+        return nuevo;
     }
 
     //si la lista tiene 1 elemento
@@ -64,26 +63,30 @@ Nodo* addFin(Nodo *head, Nodo *nuevo){
 
 Nodo* dropElemento(Nodo *head, int n){
     //si la lista está vacia
-    if(head==nullptr) return nullptr;
-
-    //si se tiene que eliminar el primer elemento
-    if(head->getDato() == n) return head->getNext();
-
-
-    //si la lista tiene muchos elementos
-    Nodo *current = head;
-    Nodo *last= nullptr;
-    while (current!= nullptr){
-
-        if (current->getDato()==n){
-            last->setNext(current->getNext());
-            current->setNext(nullptr);
-            return head;
-        }
-        last=current;
-        current= current->getNext();
+    if(head == nullptr){
+        return nullptr;
     }
 
+    //si el nodo a eliminar es el head
+    if(head->getDato() == n){
+        Nodo *temp= head->getNext();
+        head->setNext(nullptr);
+        delete head;
+        return temp;
+    }
+
+    //si el nodo a eliminar no es el head
+    Nodo *current= head;
+    while (current->getNext() != nullptr){
+        if(current->getNext()->getDato() == n){
+            Nodo *temp= current->getNext();
+            current->setNext(current->getNext()->getNext());
+            temp->setNext(nullptr);
+            delete temp;
+            return head;
+        }
+        current= current->getNext();
+    }
     return head;
 }
 
@@ -112,6 +115,6 @@ int main() {
     imprimirLista(head);
 
 
-    dropElemento(head, 4);
-    imprimirLista(head); 
+    head=dropElemento(head, 2);
+    imprimirLista(head);
 }   
